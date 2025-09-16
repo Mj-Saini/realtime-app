@@ -65,11 +65,17 @@ export default function App() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    // const sendMessage = () => {
+    //     if (!input.trim()) return;
+    //     const msg = { text: input, senderId: socket.id };
+    //     socket.emit("sendData", msg);
+    //     setMessages((prev) => [...prev, { ...msg, sender: "me" }]);
+    //     setInput("");
+    // };
     const sendMessage = () => {
         if (!input.trim()) return;
         const msg = { text: input, senderId: socket.id };
         socket.emit("sendData", msg);
-        setMessages((prev) => [...prev, { ...msg, sender: "me" }]);
         setInput("");
     };
 
