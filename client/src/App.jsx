@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://192.168.1.20:3000");
+const socket = io("https://realtime-app-6jy6.onrender.com");
 
 export default function App() {
     const [messages, setMessages] = useState([]);
