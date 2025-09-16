@@ -1,43 +1,3 @@
-// import { useState, useEffect } from "react";
-// import { io } from "socket.io-client";
-
-// const socket = io("https://realtime-app-6jy6.onrender.com");
-
-// export default function App() {
-//     const [messages, setMessages] = useState([]);
-//     const [input, setInput] = useState("");
-
-//     useEffect(() => {
-//         socket.on("receiveData", (data) => {
-//             setMessages((prev) => [...prev, data]);
-//         });
-//     }, []);
-
-//     const sendMessage = () => {
-//         if (!input.trim()) return;
-//         socket.emit("sendData", input);
-//         setInput("");
-//     };
-
-//     return (
-//         <div style={{ padding: "2rem" }}>
-//             <h1>Realtime Chat</h1>
-//             <input
-//                 value={input}
-//                 onChange={(e) => setInput(e.target.value)}
-//                 placeholder="Type message"
-//             />
-//             <button onClick={sendMessage}>Send</button>
-
-//             <ul>
-//                 {messages.map((msg, i) => (
-//                     <li key={i}>{msg}</li>
-//                 ))}
-//             </ul>
-//         </div>
-//     );
-// }
-
 
 
 
@@ -52,6 +12,14 @@ export default function App() {
     const [input, setInput] = useState("");
     const messagesEndRef = useRef(null);
 
+    const [height, setHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+        const handleResize = () => setHeight(window.innerHeight);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     useEffect(() => {
         socket.on("receiveData", (data) => {
             setMessages((prev) => [
@@ -65,13 +33,7 @@ export default function App() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    // const sendMessage = () => {
-    //     if (!input.trim()) return;
-    //     const msg = { text: input, senderId: socket.id };
-    //     socket.emit("sendData", msg);
-    //     setMessages((prev) => [...prev, { ...msg, sender: "me" }]);
-    //     setInput("");
-    // };
+  
     const sendMessage = () => {
         if (!input.trim()) return;
         const msg = { text: input, senderId: socket.id };
@@ -80,7 +42,7 @@ export default function App() {
     };
 
     return (
-        <div className="flex flex-col h-[100dvh] bg-gray-900 text-gray-200">
+        <div style={{ height }} className="flex flex-col  bg-gray-900 text-gray-200">
             {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {messages.map((msg, i) => (
