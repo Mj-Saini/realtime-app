@@ -39,6 +39,9 @@
 // }
 
 
+
+
+
 import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
@@ -51,7 +54,10 @@ export default function App() {
 
     useEffect(() => {
         socket.on("receiveData", (data) => {
-            setMessages((prev) => [...prev, { text: data, sender: "other" }]);
+            setMessages((prev) => [
+                ...prev,
+                { text: data.text, sender: data.senderId === socket.id ? "me" : "other" },
+            ]);
         });
     }, []);
 
@@ -61,8 +67,9 @@ export default function App() {
 
     const sendMessage = () => {
         if (!input.trim()) return;
-        socket.emit("sendData", input);
-        setMessages((prev) => [...prev, { text: input, sender: "me" }]);
+        const msg = { text: input, senderId: socket.id };
+        socket.emit("sendData", msg);
+        setMessages((prev) => [...prev, { ...msg, sender: "me" }]);
         setInput("");
     };
 

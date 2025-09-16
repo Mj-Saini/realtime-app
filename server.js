@@ -18,7 +18,7 @@ io.on("connection", (socket) => {
     // 5 second delay before broadcasting
     setTimeout(() => {
       console.log("Sending message after delay:", data);
-      io.emit("receiveData", data);
+      socket.broadcast.emit("receiveData", data);
     }, 1000);
   });
 
